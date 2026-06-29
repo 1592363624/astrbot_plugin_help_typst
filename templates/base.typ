@@ -576,5 +576,5 @@
 
 #v(20pt)
 #align(center + bottom)[
-  #text(size: 10pt, fill: silver)[Powered by AstrBot & Typst Engine]
+  #text(size: 10pt, fill: silver)[Powered by Shell]
 ]

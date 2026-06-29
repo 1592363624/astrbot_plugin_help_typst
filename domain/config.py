@@ -10,6 +10,14 @@ HEX_COLOR_REGEX = re.compile(r"^#(?:[0-9a-fA-F]{3}){1,2}$")
 
 
 @dataclass
+class MenuTitlesConfig:
+    """菜单标题配置"""
+    command_title: str
+    event_title: str
+    filter_title: str
+
+
+@dataclass
 class RenderingConfig:
     timeout_analysis: float
     timeout_compile: float
@@ -89,6 +97,7 @@ class TypstPluginConfig:
     ignored_plugins: set[str]
     custom_font_path: str
 
+    menu_titles: MenuTitlesConfig
     rendering: RenderingConfig
     appearance: AppearanceConfig
 
@@ -159,6 +168,14 @@ class TypstPluginConfig:
 
         custom_font_path = raw_config.get("custom_font_path", "")
         
+        # Menu Titles
+        raw_titles = raw_config.get("menu_titles", {})
+        titles_cfg = MenuTitlesConfig(
+            command_title=raw_titles.get("command_title", "小爱同学 指令菜单"),
+            event_title=raw_titles.get("event_title", "AstrBot 事件监听"),
+            filter_title=raw_titles.get("filter_title", "AstrBot 过滤器分析"),
+        )
+        
         logger.debug(
             f"[HelpTypst] 配置加载完毕: PPI={render_cfg.ppi}, Concurrency={render_cfg.max_concurrent_tasks}, 外观预设: {active_preset_name}"
         )
@@ -167,6 +184,7 @@ class TypstPluginConfig:
             enable_waiting_message=enable_wait,
             ignored_plugins=ignored_set,
             custom_font_path=custom_font_path,
+            menu_titles=titles_cfg,
             rendering=render_cfg,
             appearance=appearance_cfg
         )
